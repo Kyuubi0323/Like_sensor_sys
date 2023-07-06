@@ -22,7 +22,7 @@
 
 
 #include <Wire.h>
-#include <BH1750.h>
+#include "BH1750.h"
 
 BH1750 lightMeter;
 
