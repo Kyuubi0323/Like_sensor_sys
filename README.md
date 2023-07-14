@@ -18,10 +18,10 @@
 [Đây là link để có thể hiển thị mã QR của thiết bị](https://rainmaker.espressif.com/qrcode.html?data={%22ver%22:%22v1%22,%22name%22:%22PROV_12345%22,%22pop%22:%221234567%22,%22transport%22:%22ble%22})
 - Nếu như muốn kết nối với thiết bị mà không cần quét QR bạn có thể lựa chọn mục "I don't have QR code" để có thể kết nối với bluetooth của thiết bị, sau đó chọn mục "BLE" sau đó ứng dụng sẽ hiển thị tên bluetooth của thiết bị là "PROV_12345" và mật khẩu sẽ là "1234567"
 
-## Bước 4: Kết nối đucợ với thiết bị thông qua bluetooth xong, tiếp theo sẽ là lựa chọn wifi để thiết bị có thể kết nối
+## Bước 4: Kết nối được với thiết bị thông qua bluetooth xong, tiếp theo sẽ là lựa chọn wifi để thiết bị có thể kết nối
 - Bạn hãy đặt thiết bị trong môi trường có mạng wifi 2.4GHz, lựa chọn mạng và nhập mật khẩu trên ứng dụng sau đó nhấn "START" để thiết bị bắt đầu quá trình kết nối
 - Khi mà kết nối thành công với wifi, bạn sẽ đợi trong một vài phút trên ứng dụng để có thể hoàn thành set up và trên phần cứng đèn xanh sẽ nhấp nháy nếu thiết bị đã kết nối được với wifi. Và nếu wifi chưa được kết nối bạn cần làm lại từ bước 1
-[[!Set up done](setup_done.jpg)](blink_wifi.mp4)
+[![Set up done](setup_done.jpg)](blink_wifi.mp4)
 
 ## Như thế là đã hoàn thành xong set up cho ứng dụng và thiết bị
 
