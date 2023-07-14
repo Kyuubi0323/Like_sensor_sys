@@ -16,13 +16,14 @@ char deviceName_1[] = "LED1";
 char deviceName_2[] = "LED2";
 char deviceName_3[] = "LED3";
 char deviceName_4[] = "LED4";
+char deviceName_5[] = "SWITCH SENSOR";
 
 // define the GPIO connected with Relays
 static uint8_t RelayPin1 = 18;  //D23
 static uint8_t RelayPin2 = 5;   //D22
 static uint8_t RelayPin3 = 23;  //D21
 static uint8_t RelayPin4 = 19;  //D19
-
+static uint8_t Switch_sensor = 4;  //D19
 
 static uint8_t gpio_reset = 0;
 // static uint8_t DHTPIN = 18;
@@ -32,14 +33,15 @@ static uint8_t wifiLed = 2;
 bool wifi_connected = 0;
 
 float lux = 0;
+bool enable_sensor = true;
 
 /* Variable for reading pin status*/
 // Relay State
-bool toggleState_1 = LOW;  //Define integer to remember the toggle state for relay 1
-bool toggleState_2 = LOW;  //Define integer to remember the toggle state for relay 2
-bool toggleState_3 = LOW;  //Define integer to remember the toggle state for relay 3
-bool toggleState_4 = LOW;  //Define integer to remember the toggle
-
+bool toggleState_1 = false;  //Define integer to remember the toggle state for relay 1
+bool toggleState_2 = false;  //Define integer to remember the toggle state for relay 2
+bool toggleState_3 = false;  //Define integer to remember the toggle state for relay 3
+bool toggleState_4 = false;  //Define integer to remember the toggle state for relay 4
+bool toggleState_5 = false;  //Define integer to remember the toggle state for sưitch sensor
 // DHT dht(DHTPIN, DHT11);
 
 SimpleTimer Timer;
@@ -51,22 +53,23 @@ static Switch my_switch1(deviceName_1, &RelayPin1);
 static Switch my_switch2(deviceName_2, &RelayPin2);
 static Switch my_switch3(deviceName_3, &RelayPin3);
 static Switch my_switch4(deviceName_4, &RelayPin4);
-
+static Switch my_switch5(deviceName_5, &Switch_sensor);
 //Irq Handler
-const int interruptPin = 10;
-void enableInterrupt()
-{
-  attachInterrupt(digitalPinToInterrupt(interruptPin), interruptHandler, CHANGE);
-}
-void interruptHandler()
-{
-  //func
-  //NULL
-}
-void disableInterrupt()
-{
-  detachInterrupt(digitalPinToInterrupt(interruptPin));
-}
+// const int interruptPin = 22;
+// void enableInterrupt()
+// {
+//   attachInterrupt(digitalPinToInterrupt(interruptPin), interruptHandler, CHANGE);
+// }
+// void interruptHandler()
+// {
+//   //func
+//   //NULL
+//   manual_control(lux);
+// }
+// void disableInterrupt()
+// {
+//   detachInterrupt(digitalPinToInterrupt(interruptPin));
+// }
 
 
 void sysProvEvent(arduino_event_t *sys_event) {
@@ -105,7 +108,7 @@ void write_callback(Device *device, Param *param, const param_val_t val, void *p
   const char *param_name = param->getParamName();
 
   if (strcmp(device_name, deviceName_1) == 0) {
-    disableInterrupt();
+    // enable_sensor = false;
     Serial.printf("LED1 = %s\n", val.val.b ? "true" : "false");
     if (strcmp(param_name, "Power") == 0) {
       Serial.printf("Received value = %s for %s - %s\n", val.val.b ? "true" : "false", device_name, param_name);
@@ -113,9 +116,10 @@ void write_callback(Device *device, Param *param, const param_val_t val, void *p
       (toggleState_1 == false) ? digitalWrite(RelayPin1, LOW) : digitalWrite(RelayPin1, HIGH);
       param->updateAndReport(val);
     }
-    enableInterrupt();
+    //  if(toggleState_1 == false)
+    //   enable_sensor = true;
   } else if (strcmp(device_name, deviceName_2) == 0) {
-    disableInterrupt();
+    
     Serial.printf("LED2 = %s\n", val.val.b ? "true" : "false");
     if (strcmp(param_name, "Power") == 0) {
       Serial.printf("Received value = %s for %s - %s\n", val.val.b ? "true" : "false", device_name, param_name);
@@ -123,9 +127,9 @@ void write_callback(Device *device, Param *param, const param_val_t val, void *p
       (toggleState_2 == false) ? digitalWrite(RelayPin2, LOW) : digitalWrite(RelayPin2, HIGH);
       param->updateAndReport(val);
     }
-    enableInterrupt();
+  
   } else if (strcmp(device_name, deviceName_3) == 0) {
-    disableInterrupt();
+    
     Serial.printf("LED3 = %s\n", val.val.b ? "true" : "false");
     if (strcmp(param_name, "Power") == 0) {
       Serial.printf("Received value = %s for %s - %s\n", val.val.b ? "true" : "false", device_name, param_name);
@@ -133,9 +137,9 @@ void write_callback(Device *device, Param *param, const param_val_t val, void *p
       (toggleState_3 == false) ? digitalWrite(RelayPin3, LOW) : digitalWrite(RelayPin3, HIGH);
       param->updateAndReport(val);
     }
-    enableInterrupt();
+    
   } else if (strcmp(device_name, deviceName_4) == 0) {
-    disableInterrupt();
+    
     Serial.printf("LED4 = %s\n", val.val.b ? "true" : "false");
     if (strcmp(param_name, "Power") == 0) {
       Serial.printf("Received value = %s for %s - %s\n", val.val.b ? "true" : "false", device_name, param_name);
@@ -143,8 +147,29 @@ void write_callback(Device *device, Param *param, const param_val_t val, void *p
       (toggleState_4 == false) ? digitalWrite(RelayPin4, LOW) : digitalWrite(RelayPin4, HIGH);
       param->updateAndReport(val);
     }
-    enableInterrupt();
+    
+  } else if (strcmp(device_name, deviceName_5) == 0) {
+    
+    Serial.printf("Switch sensor = %s\n", val.val.b ? "true" : "false");
+    if (strcmp(param_name, "Power") == 0) {
+      Serial.printf("Received value = %s for %s - %s\n", val.val.b ? "true" : "false", device_name, param_name);
+      toggleState_5 = val.val.b;
+      // (toggleState_4 == false) ? digitalWrite(RelayPin4, LOW) : digitalWrite(RelayPin4, HIGH);
+      // param->updateAndReport(val);
+      if(toggleState_5 == false)
+      {
+        digitalWrite(Switch_sensor, LOW);
+        enable_sensor = false;
+        param->updateAndReport(val);
+      } else{
+          digitalWrite(Switch_sensor, HIGH);
+          enable_sensor = true;
+          param->updateAndReport(val);
+      }
+    }
+    
   }
+ 
 }
 
 void readSensor() {
@@ -152,7 +177,7 @@ void readSensor() {
   Serial.print("Light: ");
   Serial.print(lux);
   Serial.println(" lx");
-  delay(100);
+  delay(1000);
 }
 
 void manual_control(float lux1) {
@@ -165,11 +190,11 @@ void manual_control(float lux1) {
 
     // delay(5000);
     // digitalWrite(RelayPin1, LOW);
-    toggleState_1 = 1;
+    toggleState_1 = true;
     my_switch1.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, toggleState_1);
   } else {
     digitalWrite(RelayPin1, LOW);
-    toggleState_1 = 0;
+    toggleState_1 = false;
     my_switch1.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, toggleState_1);
   }
 
@@ -216,6 +241,7 @@ void setup() {
   pinMode(RelayPin2, OUTPUT);
   pinMode(RelayPin3, OUTPUT);
   pinMode(RelayPin4, OUTPUT);
+  pinMode(Switch_sensor, OUTPUT);
   pinMode(wifiLed, OUTPUT);
   pinMode(gpio_reset, INPUT);
 
@@ -224,6 +250,7 @@ void setup() {
   digitalWrite(RelayPin2, !toggleState_2);
   digitalWrite(RelayPin3, !toggleState_3);
   digitalWrite(RelayPin4, !toggleState_4);
+  digitalWrite(Switch_sensor, !toggleState_5);
   digitalWrite(wifiLed, LOW);
 
 
@@ -236,13 +263,14 @@ void setup() {
   my_switch2.addCb(write_callback);
   my_switch3.addCb(write_callback);
   my_switch4.addCb(write_callback);
+  my_switch5.addCb(write_callback);
 
   //Add switch device to the node
   my_node.addDevice(my_switch1);
   my_node.addDevice(my_switch2);
   my_node.addDevice(my_switch3);
   my_node.addDevice(my_switch4);
-
+  my_node.addDevice(my_switch5);
 
   //This is optional
   RMaker.setTimeZone("Asia/Ho_Chi_Minh");
@@ -258,7 +286,7 @@ void setup() {
   RMaker.start();
 
   // Timer for Sending Sensor Data
-  Timer.setInterval(5000);
+  // Timer.setInterval(5000);
 
   WiFi.onEvent(sysProvEvent);
 
@@ -268,10 +296,11 @@ void setup() {
   WiFiProv.beginProvision(WIFI_PROV_SCHEME_SOFTAP, WIFI_PROV_SCHEME_HANDLER_NONE, WIFI_PROV_SECURITY_1, pop, service_name);
 #endif
 
-  my_switch1.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, false);
-  my_switch2.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, false);
-  my_switch3.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, false);
-  my_switch4.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, false);
+  my_switch1.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, true);
+  my_switch2.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, true);
+  my_switch3.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, true);
+  my_switch4.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, true);
+  my_switch5.updateAndReportParam(ESP_RMAKER_DEF_POWER_NAME, true);
 }
 
 
@@ -323,13 +352,14 @@ void loop() {
     digitalWrite(wifiLed, true);
     delay(50);
     digitalWrite(wifiLed, false);
-    if (Timer.isReady()) {
+    // if (Timer.isReady()) {
       //Serial.println("Sending Sensor Data");
       readSensor();
 
-      Timer.reset();  // Reset a second timer
-    }
+      // Timer.reset();  // Reset a second timer
+    // }
   }
-  delay(1000);
-  manual_control(lux);
+  //delay(500);
+  if(enable_sensor)
+    manual_control(lux);
 }
