@@ -22,7 +22,7 @@
 - Bạn hãy đặt thiết bị trong môi trường có mạng wifi 2.4GHz, lựa chọn mạng và nhập mật khẩu trên ứng dụng sau đó nhấn "START" để thiết bị bắt đầu quá trình kết nối
 - Khi mà kết nối thành công với wifi, bạn sẽ đợi trong một vài phút trên ứng dụng để có thể hoàn thành set up và trên phần cứng đèn xanh sẽ nhấp nháy nếu thiết bị đã kết nối được với wifi. Và nếu wifi chưa được kết nối bạn cần làm lại từ bước 1
 ![Set up done](setup_done.jpg)
-[![Video nhấp nháy wifi]](blink_wifi.mp4)
+[![Video nhấp nháy wifi]]()(blink_wifi.mp4)
 
 ## Như thế là đã hoàn thành xong set up cho ứng dụng và thiết bị
 
