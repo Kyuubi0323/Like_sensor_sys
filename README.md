@@ -30,5 +30,5 @@
 - Thiết bị được chia ra thành 2 hướng sử dụng đó là bật tắt đèn bằng ứng dụng và bật tắt đèn bằng cảm biến ánh sáng
 - Dưới đây là hình ảnh tổng quan trên ứng dụng sau khi set up thành công (Bật: Nút sáng tím, Tắt: nút sáng trắng)
 ![Ảnh tổng quan ứngh dụng](sum.jpg)
-- Nút SWITCH SENSOR trên ứng dụng có tác dụng chuyển đổi việc bật tắt bằng cảm biến hoặc bằng ứng dụng, khi mà nút SWITCH SENSOR bật LED1 sẽ được bật tắt theo cảm biến ánh sáng và mức ánh sáng được set để bật tắt ở đây chỉ là thử nghiệm, khi nút này tắt LED1 được bật và tắt trên ứng dụng
+- Nút SWITCH SENSOR trên ứng dụng có tác dụng chuyển đổi việc bật tắt bằng cảm biến hoặc bằng ứng dụng, khi mà nút SWITCH SENSOR bật LED1 sẽ được bật tắt theo cảm biến ánh sáng và mức ánh sáng được set để bật tắt ở đây chỉ là thử nghiệm(hiện tại đang set dưới 58lx thì sẽ turn on Relay), khi nút này tắt LED1 sẽ được điều khiển hoàn toàn trên ứng dụng
 - LED2, LED3, LED4 chỉ có thể bật tắt bằng ứng dụng

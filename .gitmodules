@@ -1,3 +1,0 @@
-[submodule "Firmware/esp-idf"]
-	path = Firmware/esp-idf
-	url = https://github.com/espressif/esp-idf.git
